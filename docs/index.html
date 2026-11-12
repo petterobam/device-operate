@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的macOS · 一个窗口管理你的 Mac</title>
+<meta name="description" content="我的macOS 是一款 macOS 系统管理工具：实时资源监控、应用治理、存储清理、网络足迹与系统定时任务，已通过 Apple 公证。" />
+<link rel="icon" href="./assets/icon.png" />
+<style>
+  :root{
+    --ink:#101417; --ink-2:#1b2227; --paper:#f3f2ee; --card:#ffffff;
+    --line:#e4e1da; --muted:#6d7377; --teal:#0f766e; --teal-soft:#dff1ee;
+    --orange:#c2410c; --orange-soft:#fbe9df; --shadow:0 30px 80px rgba(16,20,23,.16);
+    --radius:20px; --max:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased;line-height:1.65}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+  header{position:sticky;top:0;z-index:50;background:rgba(243,242,238,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(228,225,218,.8)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.01em}
+  .brand img{width:34px;height:34px;border-radius:9px;box-shadow:0 4px 14px rgba(16,20,23,.18)}
+  .navlinks{display:flex;align-items:center;gap:28px;font-size:14px;color:#4b5156}
+  .navlinks a:hover{color:var(--ink)}
+  .nav .cta{background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:650}
+  .hero{padding:84px 0 44px}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:var(--teal-soft);padding:7px 13px;border-radius:999px}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(15,118,110,.14)}
+  h1{font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-.045em;margin:22px 0 22px;font-weight:800}
+  h1 em{font-style:normal;color:var(--teal)}
+  .lede{font-size:18px;line-height:1.75;color:#555c61;max-width:30em;margin:0 0 30px}
+  .actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .2s ease, box-shadow .2s ease, background .2s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.primary{background:var(--ink);color:#fff;box-shadow:0 12px 28px rgba(16,20,23,.24)}
+  .btn.primary:hover{box-shadow:0 18px 36px rgba(16,20,23,.3)}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;font-size:12.5px;color:#646a6f}
+  .meta span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);padding:6px 11px;border-radius:999px}
+  .hero-shot{position:relative}
+  .hero-shot:before{content:"";position:absolute;inset:8% -8% -12% 14%;background:radial-gradient(60% 60% at 60% 40%,rgba(15,118,110,.2),transparent 70%);filter:blur(30px);z-index:-1}
+  .shot-frame{background:linear-gradient(145deg,#222a30,#0d1114);padding:10px;border-radius:18px;box-shadow:var(--shadow);transform:perspective(1600px) rotateY(-3deg) rotateX(1deg)}
+  .shot-frame img{border-radius:11px}
+  section{padding:76px 0}
+  .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:36px}
+  .kicker{font-size:12.5px;font-weight:750;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+  h2{font-size:clamp(30px,4vw,46px);line-height:1.1;letter-spacing:-.035em;margin:0;font-weight:780}
+  .section-head p{max-width:34em;color:var(--muted);margin:0}
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .feature{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:transform .22s ease, box-shadow .22s ease}
+  .feature:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(16,20,23,.09)}
+  .icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:20px;background:var(--teal-soft);color:var(--teal)}
+  .feature:nth-child(2n) .icon{background:var(--orange-soft);color:var(--orange)}
+  .feature h3{font-size:18px;margin:0 0 8px;letter-spacing:-.015em}
+  .feature p{font-size:14.5px;color:var(--muted);margin:0}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 30px rgba(16,20,23,.05);cursor:zoom-in}
+  .gallery img{width:100%;aspect-ratio:16/10.75;object-fit:cover;transition:transform .5s ease}
+  .gallery figure:hover img{transform:scale(1.015)}
+  .gallery figcaption{padding:16px 20px 18px;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line)}
+  .gallery figcaption b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px}
+  .install{background:var(--ink);color:#fff;border-radius:28px;padding:56px;display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center}
+  .install h2{color:#fff}
+  .install p{color:#aab3b9;margin:14px 0 0;font-size:15px}
+  .steps{display:grid;gap:14px}
+  .step{display:flex;gap:16px;align-items:flex-start;padding:16px 18px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.04)}
+  .step .n{flex:none;width:26px;height:26px;border-radius:8px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:12.5px;font-weight:800}
+  .step b{display:block;font-size:14.5px;margin-bottom:2px}
+  .step span{font-size:13px;color:#aab3b9}
+  .privacy{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .privacy div{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+  .privacy h4{margin:0 0 6px;font-size:15px}
+  .privacy p{margin:0;font-size:13.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);padding:34px 0 46px;color:var(--muted);font-size:13px}
+  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .lightbox{position:fixed;inset:0;background:rgba(8,10,12,.88);display:none;align-items:center;justify-content:center;padding:40px;z-index:100}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lightbox button{position:absolute;top:18px;right:22px;background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-size:13px;cursor:pointer}
+  @media (max-width:980px){
+    .hero-grid,.install{grid-template-columns:1fr}
+    .features,.privacy{grid-template-columns:1fr 1fr}
+    .gallery{grid-template-columns:1fr}
+    .navlinks a:not(.cta){display:none}
+    .install{padding:36px}
+    .hero{padding-top:54px}
+  }
+  @media (max-width:640px){
+    .features,.privacy{grid-template-columns:1fr}
+    .wrap{padding:0 20px}
+    .section-head{display:block}
+    .section-head p{margin-top:12px}
+    .hero-grid{gap:36px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><img src="./assets/icon.png" alt="我的macOS 图标" /> 我的macOS</a>
+    <nav class="navlinks">
+      <a href="#features">功能</a>
+      <a href="#screens">界面</a>
+      <a href="#install">安装</a>
+      <a class="cta" href="https://github.com/petterobam/device-operate/releases/latest">下载</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>macOS 系统管理工具 · 已公证</span>
+        <h1>一个窗口<br />管理你的 <em>Mac</em></h1>
+        <p class="lede">实时资源监控、应用治理、存储清理、网络足迹与系统定时任务。数据留在本机，操作直达系统底层，却比系统设置更好用。</p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/petterobam/device-operate/releases/latest">下载 macOS 版</a>
+          <a class="btn ghost" href="https://github.com/petterobam/device-operate">查看源码</a>
+        </div>
+        <div class="meta">
+          <span>v0.1.0</span><span>Apple Silicon</span><span>macOS 13+</span><span>Developer ID 公证</span>
+        </div>
+      </div>
+      <div class="hero-shot">
+        <div class="shot-frame"><img src="./assets/app-processes.png" alt="进程管理界面" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">Features</div><h2>把系统管理收进一处</h2></div>
+        <p>不是另一个活动监视器，而是把「看清楚」和「动手处理」连在一起的 macOS 工作台。</p>
+      </div>
+      <div class="features">
+        <article class="feature"><div class="icon">◉</div><h3>实时资源监控</h3><p>CPU 分核心、内存与 Swap 分解、磁盘 I/O、网络速率与温度，30 秒采样并支持阈值告警。</p></article>
+        <article class="feature"><div class="icon">▦</div><h3>应用治理</h3><p>340+ 应用清单，运行状态、进程数、内存占用一目了然，支持打开、重启、强停与卸载。</p></article>
+        <article class="feature"><div class="icon">◫</div><h3>存储清理</h3><p>按应用、文档、下载、开发缓存分类占用，找出大文件与可清理目录，确认后安全移入废纸篓。</p></article>
+        <article class="feature"><div class="icon">◎</div><h3>网络足迹</h3><p>按 App Bundle 聚合外联、入站与监听连接，公网目标落在世界地图，支持 Clash / Mihomo 代理透视。</p></article>
+        <article class="feature"><div class="icon">◷</div><h3>系统定时任务</h3><p>统一查看 LaunchAgent、LaunchDaemon 与 Crontab，支持备注、启用/禁用、立即执行与输出日志。</p></article>
+        <article class="feature"><div class="icon">⌘</div><h3>工具与 Agent</h3><p>真实 ~/.ssh 管理、文件关联、系统设置直达，以及面向系统任务理解的 Agent 工作流。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">Screens</div><h2>真实界面</h2></div>
+        <p>所有截图来自当前正式版，点击可查看大图。</p>
+      </div>
+      <div class="gallery">
+        <figure><img src="./assets/app-network.png" alt="网络足迹界面" /><figcaption><b>网络足迹</b>按应用观察连接，把公网目标落在世界地图上。</figcaption></figure>
+        <figure><img src="./assets/app-apps.png" alt="我的应用界面" /><figcaption><b>我的应用</b>340 个应用、30 个运行中，按资源与使用习惯治理。</figcaption></figure>
+        <figure><img src="./assets/app-storage.png" alt="存储空间界面" /><figcaption><b>存储空间</b>分类占用与可立即处理的缓存一目了然。</figcaption></figure>
+        <figure><img src="./assets/app-tasks.png" alt="系统定时任务界面" /><figcaption><b>系统定时任务</b>LaunchAgent、LaunchDaemon 与 Crontab 统一管理。</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="install">
+        <div>
+          <div class="kicker" style="color:#5eead4">Install</div>
+          <h2>下载，拖入，完成</h2>
+          <p>DMG 已完成 Apple 公证与 staple，首次打开不会被 Gatekeeper 拦截。</p>
+          <div class="actions" style="margin-top:26px">
+            <a class="btn primary" style="background:#fff;color:#101417" href="https://github.com/petterobam/device-operate/releases/latest">下载 My-macOS-0.1.0-arm64.dmg</a>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="n">1</div><div><b>下载 DMG</b><span>约 163 MB，Apple Silicon 原生。</span></div></div>
+          <div class="step"><div class="n">2</div><div><b>拖入 Applications</b><span>把「我的macOS」拖到应用程序文件夹。</span></div></div>
+          <div class="step"><div class="n">3</div><div><b>首次打开</b><span>已公证签名，直接打开即可。</span></div></div>
+          <div class="step"><div class="n">4</div><div><b>按需授权</b><span>完全磁盘访问 / 自动化权限用于解锁应用授权、登录项等完整能力。</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">Privacy</div><h2>本地优先</h2></div>
+        <p>系统数据只在本机处理；网络足迹不读取流量内容。</p>
+      </div>
+      <div class="privacy">
+        <div><h4>数据不出本机</h4><p>监控、应用、存储与任务数据都在本地采集与展示，不上传服务器。</p></div>
+        <div><h4>不抓包</h4><p>网络足迹只读取套接字与进程归属，不采集网页内容、请求正文或账号密码。</p></div>
+        <div><h4>定位可关闭</h4><p>IP 归属地查询会向 ipwho.is 发送公网 IP，可在界面中随时关闭。</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 我的macOS · Built with Electron</span>
+    <span>Developer ID signed &amp; notarized by Apple</span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><button type="button" id="closeLb">关闭</button><img alt="预览" /></div>
+<script>
+  const lb = document.getElementById('lightbox');
+  const lbImg = lb.querySelector('img');
+  document.querySelectorAll('.gallery img').forEach(img => {
+    img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+  });
+  const close = () => lb.classList.remove('open');
+  lb.addEventListener('click', e => { if (e.target === lb || e.target.id === 'closeLb') close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>
+</body>
+</html>
